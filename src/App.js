@@ -2,6 +2,7 @@ import { Container, Nav, Navbar, Button } from 'react-bootstrap';
 import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import Login from './components/authorization/Login';
+import Registration from './components/authorization/Registration';
 import EditTask from './components/pages/EditTask';
 import NotFound from './components/pages/NotFound';
 import Tasks from './components/pages/Tasks';
@@ -44,6 +45,7 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/login" component={Login} />
+            <Route exaxt path="/registration" component={Registration} />
             <Route render={() => <Redirect replace to="/login"/>} />
           </Switch>
         </Router>

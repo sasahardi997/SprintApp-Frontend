@@ -8,7 +8,7 @@ export const login = async function(username, password){
     }
 
     try {
-        const res = await SprintAxios.post('korisnici/auth', cred);
+        const res = await SprintAxios.post('users/auth', cred);
         const decoded = jwt_decode(res.data);
         console.log(decoded.role.authority)
         window.localStorage.setItem('role', decoded.role.authority);
@@ -17,6 +17,21 @@ export const login = async function(username, password){
         console.log(error)
     }
     window.location.replace("/");
+}
+
+export const registration = async function(username, password, confirmPassword){
+    const cred={
+        username: username,
+        password: password,
+        confirmPassword: confirmPassword
+    }
+
+    SprintAxios.post("users", cred)
+        .then(res => {
+            window.location.replace("/");
+        }).catch(error => {
+            console.log(error)
+        })
 }
 
 export const logout = function(){

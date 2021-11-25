@@ -62,7 +62,6 @@ const Tasks = (props) => {
     };
 
     const sprintSumCheck = () => {
-        console.log(sprintSum)
         if(sprintSum !== '0'){
             return true;
         }
@@ -128,7 +127,7 @@ const Tasks = (props) => {
                     <Button variant="danger" onClick={() => deleteTask(task.id)}>Delete</Button>
                 </div>
             ) 
-        } else if(window.localStorage['role'] === 'ROLE_KORISNIK'){
+        } else if(window.localStorage['role'] === 'ROLE_USER'){
             if(task.stateId !== 3){
                 return <Button variant="primary" onClick={() => nextState(task.id)} >Move on next State</Button>
             }
