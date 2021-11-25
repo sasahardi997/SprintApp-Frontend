@@ -1,4 +1,5 @@
 import { Container, Nav, Navbar, Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import Login from './components/authorization/Login';
@@ -6,15 +7,20 @@ import Registration from './components/authorization/Registration';
 import EditTask from './components/pages/EditTask';
 import NotFound from './components/pages/NotFound';
 import Tasks from './components/pages/Tasks';
+import Notification from './components/UI/Notification';
 import { logout } from './services/auth';
 
 function App() {
+
+  const notification = useSelector(state => state.notification.notification);
+  const notificationIsVisible = useSelector(state => state.notification.notificationIsVisible);
 
   const jwt = window.localStorage['jwt'];
   
   if(jwt){
     return(
       <div>
+        {notificationIsVisible && <Notification status={notification.status} title={notification.title} message={notification.message} />}
         <Router>
           <Navbar expand bg="dark" variant="dark">
             <Navbar.Brand as={Link} to="/">

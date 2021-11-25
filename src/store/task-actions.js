@@ -1,4 +1,5 @@
 import SprintAxios from "../apis/SprintAxios"
+import { notificationActions } from "./notification-slice";
 import { taskActions } from "./task-slice"
 
 
@@ -19,7 +20,7 @@ export const getTasks = (newPageNo, taskName, sprintId) => {
     }
 
     return (dispatch) => {
-        SprintAxios.get("http://localhost:8080/api/tasks", config)
+        SprintAxios.get("tasks", config)
             .then(res => {
                 dispatch(taskActions.replaceTasks({
                     tasks: res.data,
@@ -28,81 +29,143 @@ export const getTasks = (newPageNo, taskName, sprintId) => {
                     sprintSum: res.headers['sprint-sum']
                 }))
             }).catch(error => {
-                console.log(error)
-                alert("Error fetching tasks...")
+                dispatch(notificationActions.showNotification({
+                    status: 'error',
+                    title: 'Error!',
+                    message: 'Fetching tasks failed!'
+                }))
+                setTimeout(() => {
+                    dispatch(notificationActions.hideNotification());
+                  }, 3000);
             })
     }
 }
 
 export const getSprints = () => {
     return (dispatch) => {
-        SprintAxios.get("http://localhost:8080/api/sprints")
+        SprintAxios.get("sprints")
             .then(res => {
                 dispatch(taskActions.replaceSprints({
                     sprints: res.data
                 }))
             }).catch(error => {
-                console.log(error)
-                alert("Error fetching sprints...")
+                dispatch(notificationActions.showNotification({
+                    status: 'error',
+                    title: 'Error!',
+                    message: 'Fetching sprints failed!'
+                }))
+                setTimeout(() => {
+                    dispatch(notificationActions.hideNotification());
+                  }, 3000);
             })
     }
 }
 
 export const getStates = () => {
     return (dispatch) => {
-        SprintAxios.get("http://localhost:8080/api/states")
+        SprintAxios.get("states")
             .then(res => {
                 dispatch(taskActions.replaceStates({
                     states: res.data
                 }))
             }).catch(error => {
-                console.log(error)
-                alert("Error fetching sprints...")
+                dispatch(notificationActions.showNotification({
+                    status: 'error',
+                    title: 'Error!',
+                    message: 'Fetching states failed!'
+                }))
+                setTimeout(() => {
+                    dispatch(notificationActions.hideNotification());
+                  }, 3000);
             })
     }
 }
 
 export const removeTask = (id) => {
     return (dispatch) => {
-        SprintAxios.delete(`http://localhost:8080/api/tasks/${id}`)
+        SprintAxios.delete(`tasks/${id}`)
             .then(res => {
                 dispatch(taskActions.removeTask({id : id}))
             }).catch(error => {
-                console.log(error)
-                alert("Error deleting task...")
+                dispatch(notificationActions.showNotification({
+                    status: 'error',
+                    title: 'Error!',
+                    message: 'Remove task failed!'
+                }))
+                setTimeout(() => {
+                    dispatch(notificationActions.hideNotification());
+                  }, 3000);
             })
     }
 }
 
 export const createTask = (task) => {
     return (dispatch) => {
-        SprintAxios.post("http://localhost:8080/api/tasks", task)
+        SprintAxios.post("tasks", task)
             .then(res => {
                 taskActions.createTask(res.data);
+
+                dispatch(notificationActions.showNotification({
+                    status: 'success',
+                    title: 'Success!',
+                    message: 'Sending task data successfully!'
+                  }))
+                  setTimeout(() => {
+                    dispatch(notificationActions.hideNotification());
+                  }, 3000);
             }).catch(error => {
-                console.log(error)
+                dispatch(notificationActions.showNotification({
+                    status: 'error',
+                    title: 'Error!',
+                    message: 'Creating task failed!'
+                }))
+                setTimeout(() => {
+                    dispatch(notificationActions.hideNotification());
+                  }, 3000);
             })
     }
 }
 
 export const editTask = (task) => {
     return (dispatch) => {
-        SprintAxios.put(`http://localhost:8080/api/tasks/${task.id}`, task)
+        SprintAxios.put(`tasks/${task.id}`, task)
             .then(res => {
+                dispatch(notificationActions.showNotification({
+                    status: 'success',
+                    title: 'Success!',
+                    message: 'Edit task successfully!'
+                  }))
+                  setTimeout(() => {
+                    dispatch(notificationActions.hideNotification());
+                  }, 3000);
+                  window.location.replace("/tasks");
             }).catch(error => {
-                console.log(error)
+                dispatch(notificationActions.showNotification({
+                    status: 'error',
+                    title: 'Error!',
+                    message: 'Editing task failed!'
+                }))
+                setTimeout(() => {
+                    dispatch(notificationActions.hideNotification());
+                  }, 3000);
             })
     }
 }
 
 export const changeState = (id) =>{
     return (dispatch) => {
-        SprintAxios.put(`http://localhost:8080/api/tasks/change-state/${id}`)
+        SprintAxios.put(`tasks/change-state/${id}`)
         .then(res => {
             dispatch(getTasks(0, "", -1));
         }).catch(error => {
-            console.log(error)
+            dispatch(notificationActions.showNotification({
+                status: 'error',
+                title: 'Error!',
+                message: 'Changing state failed!'
+            }))
+            setTimeout(() => {
+                dispatch(notificationActions.hideNotification());
+              }, 3000);
         })
-
     }
 }

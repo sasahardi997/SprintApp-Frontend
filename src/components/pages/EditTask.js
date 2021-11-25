@@ -52,7 +52,6 @@ function EditTask(props) {
 
     const changeTask = () => {
         dispatch(editTask(task));
-        window.location.replace("/tasks")
     }
 
     return (

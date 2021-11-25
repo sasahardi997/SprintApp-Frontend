@@ -2,6 +2,7 @@ import jwt_decode from "jwt-decode";
 import SprintAxios from "../apis/SprintAxios";
 
 export const login = async function(username, password){
+
     const cred={
         username: username,
         password: password
@@ -20,6 +21,7 @@ export const login = async function(username, password){
 }
 
 export const registration = async function(username, password, confirmPassword){
+
     const cred={
         username: username,
         password: password,
@@ -30,7 +32,6 @@ export const registration = async function(username, password, confirmPassword){
         .then(res => {
             window.location.replace("/");
         }).catch(error => {
-            console.log(error)
         })
 }
 
