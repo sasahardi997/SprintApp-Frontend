@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Form, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { changeState, getSprints, getStates, getTasks, removeTask } from '../../store/task-actions';
 import CreateTask from './CreateTask';
 
@@ -12,6 +13,7 @@ const Tasks = (props) => {
     let [cartIsShown, setCartIsShown] = useState(false);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const tasks = useSelector(state => state.task.tasks);
     const sprints = useSelector(state => state.task.sprints);
@@ -123,7 +125,7 @@ const Tasks = (props) => {
         if(window.localStorage['role'] === 'ROLE_ADMIN'){
             return(
                 <div>
-                    <Button variant="warning" style={{marginRight: '5px'}} onClick={() => props.history.push(`/tasks/${task.id}`)}>Edit</Button>
+                    <Button variant="warning" style={{marginRight: '5px'}} onClick={() => navigate(`/tasks/${task.id}`)}>Edit</Button>
                     <Button variant="danger" onClick={() => deleteTask(task.id)}>Delete</Button>
                 </div>
             ) 

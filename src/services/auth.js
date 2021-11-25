@@ -32,6 +32,7 @@ export const registration = async function(username, password, confirmPassword){
         .then(res => {
             window.location.replace("/");
         }).catch(error => {
+            alert("User registration failed!");
         })
 }
 

@@ -1,7 +1,6 @@
 import { Container, Nav, Navbar, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
-import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
+import { Route, BrowserRouter as Router, Routes, Link, Navigate } from 'react-router-dom';
 import Login from './components/authorization/Login';
 import Registration from './components/authorization/Registration';
 import EditTask from './components/pages/EditTask';
@@ -20,7 +19,8 @@ function App() {
   if(jwt){
     return(
       <div>
-        {notificationIsVisible && <Notification status={notification.status} title={notification.title} message={notification.message} />}
+        {notificationIsVisible &&
+             <Notification status={notification.status} title={notification.title} message={notification.message} />}
         <Router>
           <Navbar expand bg="dark" variant="dark">
             <Navbar.Brand as={Link} to="/">
@@ -35,12 +35,12 @@ function App() {
           </Navbar>
 
           <Container style={{paddingTop: '25px'}}>
-            <Switch>
-              {/* <Route render={() => <Redirect replace to="/tasks"/>} /> */}
-              <Route exact path="/tasks" component={Tasks} />
-              <Route exaxt path="/tasks/:id" component={EditTask} />
-              <Route component={NotFound} />
-            </Switch>
+            <Routes>
+              <Route path="/" element={<Navigate replace to="/tasks" />} />
+              <Route path="/tasks" element={<Tasks />} />
+              <Route path="/tasks/:id" element={<EditTask />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </Container>
         </Router>
       </div>
@@ -49,11 +49,11 @@ function App() {
     return(
       <Container>
         <Router>
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <Route exaxt path="/registration" component={Registration} />
-            <Route render={() => <Redirect replace to="/login"/>} />
-          </Switch>
+          <Routes>
+            <Route path="/" element={<Navigate replace to="/login" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/registration" element={<Registration />} />
+          </Routes>
         </Router>
       </Container>
     )
