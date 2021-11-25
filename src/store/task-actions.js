@@ -157,6 +157,14 @@ export const changeState = (id) =>{
         SprintAxios.put(`tasks/change-state/${id}`)
         .then(res => {
             dispatch(getTasks(0, "", -1));
+            dispatch(notificationActions.showNotification({
+                status: 'success',
+                title: 'Success!',
+                message: 'Edit task successfully!'
+              }))
+              setTimeout(() => {
+                dispatch(notificationActions.hideNotification());
+              }, 1000);
         }).catch(error => {
             dispatch(notificationActions.showNotification({
                 status: 'error',

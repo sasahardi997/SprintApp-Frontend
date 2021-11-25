@@ -24,7 +24,7 @@ function EditTask(props) {
 
     useEffect(() => {
         let id = params.id;
-        SprintAxios.get(`http://localhost:8080/api/tasks/${id}`)
+        SprintAxios.get(`tasks/${id}`)
             .then(res => {
                 let task = res.data;
                 setTask({
@@ -50,8 +50,20 @@ function EditTask(props) {
         setTask(newTask);
     }
 
+    const inputIsValid = () => {
+        if(task.name === "" || task.indepted === "" || task.points === "" || task.stateId === -1 || task.sprintId === -1){
+            alert("All fields must be filled!");
+        } else if(task.points < 0 || task.points > 20){
+            alert("Points must be number between 0 and 20!");
+        }else {
+            return true;
+        }
+    }
+
     const changeTask = () => {
-        dispatch(editTask(task));
+        if(inputIsValid()){
+            dispatch(editTask(task));
+        }
     }
 
     return (
@@ -88,7 +100,7 @@ function EditTask(props) {
                             <Form.Label>Points</Form.Label>
                             <Form.Control
                                 as="input"
-                                type="text"
+                                type="number"
                                 name="points"
                                 value={task.points}
                                 placeholder="0-20"

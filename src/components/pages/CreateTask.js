@@ -28,9 +28,21 @@ function CreateTask(props) {
         setTask(newTask);
     }
 
+    const inputIsValid = () => {
+        if(task.name === "" || task.indepted === "" || task.points === "" || task.stateId === -1 || task.sprintId === -1){
+            alert("All fields must be filled!");
+        } else if(task.points < 0 || task.points > 20){
+            alert("Points must be number between 0 and 20!");
+        }else {
+            return true;
+        }
+    }
+
     const addTask = () => {
-        dispatch(createTask(task));
-        props.onClose();
+        if(inputIsValid()){        
+            dispatch(createTask(task));
+            props.onClose();
+        }
     }
 
     return (
@@ -65,7 +77,7 @@ function CreateTask(props) {
                             <Form.Label>Points</Form.Label>
                             <Form.Control
                                 as="input"
-                                type="text"
+                                type="number"
                                 name="points"
                                 placeholder="0-20"
                                 onChange={(e) => onInputChange(e)}>
@@ -106,8 +118,8 @@ function CreateTask(props) {
                 </Col>
             </Row>
             
-            <Button style={{float: 'right'}} variant="primary" onClick={() => addTask()}>Create</Button>
-            <Button style={{float: 'right', marginRight: '10px'}} variant="primary" onClick={props.onClose}>Close</Button>
+            <Button style={{float: 'right'}} variant="success" onClick={() => addTask()}>Create Task</Button>
+            <Button style={{float: 'right', marginRight: '10px'}} variant="danger" onClick={props.onClose}>Close</Button>
 
         </Modal>
     );
